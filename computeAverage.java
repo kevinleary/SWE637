@@ -382,30 +382,40 @@ private static void printHelpMessage() {
 }
 
 public static void main(String[] args) {
+   // for (int i = 0; i < args.length; i++) {
+   //    System.out.println(args[i]);
+   // }
    // Initialize variables to store command line arguments
    String inputStrRaw = "";
-   int statisticsMode = 0; // 0 for no statistics mode selected, 1 for Mean, 2 for Median, 3 for Mode
+   int userMetricChoice = 0; // 0 for no statistics mode selected, 1 for Mean, 2 for Median, 3 for Mode
 
    // Parse command line arguments
    for (int i = 0; i < args.length; i++) {
-       if (args[i].equals("-ln") || args[i].equals("--list-of-numbers")) {
+       if ("-ln".equals(args[i]) || "--list-of-numbers".equals(args[i])) {
            if (i + 1 < args.length) {
                inputStrRaw = args[i + 1];
-               i++; // Skip the next argument
+//               i++; // Skip the next argument
            }
-       } else if (args[i].equals("-sm") || args[i].equals("--statistics-mode")) {
+       } else if ("-sm".equals(args[i]) || "--statistics-mode".equals(args[i])) {
            if (i + 1 < args.length) {
-               statisticsMode = Integer.parseInt(args[i + 1]);
-               i++; // Skip the next argument
+               userMetricChoice = Integer.parseInt(args[i + 1]);
+//               i++; // Skip the next argument
            }
-       } else if (args[i].equals("-h") || args[i].equals("--help")) {
+       } else if ("-h".equals(args[i]) || "--help".equals(args[i])) {
            printHelpMessage();
            return; // Exit the program
+       } else {
+           System.out.println("Missing arguments");
+           return;
        }
    }
 
+   if (inputStrRaw == null) {
+      System.out.println("Missing arguments");
+      return;
+   }
    // Validate input
-   if (inputStrRaw.isEmpty() || statisticsMode < 1 || statisticsMode > 4) {
+   if (inputStrRaw == null || inputStrRaw.isEmpty() || userMetricChoice < 1 || userMetricChoice > 4) {
        printHelpMessage();
        return; // Exit the program
    }
@@ -414,7 +424,7 @@ public static void main(String[] args) {
    String[] cleanInput = sanitize(inputStrRaw).split(" ");
 
    // Compute and print statistics based on the selected mode
-   switch (statisticsMode) {
+   switch (userMetricChoice) {
        case 1:
            double mean = getMeanValue(cleanInput);
            System.out.println("The Mean is: " + mean);
