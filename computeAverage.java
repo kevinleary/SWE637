@@ -394,23 +394,25 @@ public static void main(String[] args) {
        if ("-ln".equals(args[i]) || "--list-of-numbers".equals(args[i])) {
            if (i + 1 < args.length) {
                inputStrRaw = args[i + 1];
-//               i++; // Skip the next argument
+               System.out.println(inputStrRaw);
+               if (inputStrRaw == null || "null".equals(inputStrRaw)) {
+                   System.out.println("Missing arguments");
+                    return;
+               }
+               i++; // Skip the next argument
            }
        } else if ("-sm".equals(args[i]) || "--statistics-mode".equals(args[i])) {
            if (i + 1 < args.length) {
                userMetricChoice = Integer.parseInt(args[i + 1]);
-//               i++; // Skip the next argument
+               i++; // Skip the next argument
            }
        } else if ("-h".equals(args[i]) || "--help".equals(args[i])) {
            printHelpMessage();
            return; // Exit the program
-       } else {
-           System.out.println("Missing arguments");
-           return;
        }
    }
 
-   if (inputStrRaw == null) {
+   if (inputStrRaw == null || inputStrRaw == "null") {
       System.out.println("Missing arguments");
       return;
    }
