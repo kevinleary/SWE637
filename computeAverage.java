@@ -389,9 +389,11 @@ public static void main(String[] args) {
        if ("-ln".equals(args[i]) || "--list-of-numbers".equals(args[i])) {
            if (i + 1 < args.length) {
                numbers = args[i + 1];
-               if (numbers == null || "null".equals(numbers) || numbers.split(" ").length < 1) {
+               if (numbers == null || "null".equals(numbers) || numbers.split(" ").length < 1 || numbers.isEmpty()) {
                    System.out.println("Missing arguments");
-                    return;
+                   System.out.println(" ");
+                   printHelpMessage();
+                   return;
                }
 //               i++; // Skip the next argument
            }
@@ -401,6 +403,8 @@ public static void main(String[] args) {
                    statType = Integer.parseInt(args[i + 1]);
                } catch(NumberFormatException e) {
                    System.out.println("Invalid arguments");
+                   System.out.println(" ");
+                   printHelpMessage();
                    return;
                }
            }
@@ -412,15 +416,25 @@ public static void main(String[] args) {
        }
    }
 
-   if (numbers == null || numbers == "null") {
-      System.out.println("Missing arguments");
-      return;
-   }
-   // Validate input
-   if (numbers == null || numbers.isEmpty() || statType < 1 || statType > 4) {
+   if (statType == 0) {
+       System.out.println("Incorrect flags");
+       System.out.println(" ");
        printHelpMessage();
-       return; // Exit the program
+       return;
    }
+
+   if (statType > 4) {
+       System.out.println("Invalid option");
+       System.out.println(" ");
+       printHelpMessage();
+   }
+
+//   if (numbers == null || numbers == "null" || numbers.isEmpty()) {
+//      System.out.println("Missing arguments");
+//       System.out.println(" ");
+//       printHelpMessage();
+//       return;
+//   }
 
    // Clean and split the input string
     String cleanInputStr = sanitize(numbers);
@@ -432,12 +446,6 @@ public static void main(String[] args) {
     }
 
    String[] cleanInput = cleanInputStr.split(" ");
-
-   if ("".equals(cleanInput)) {
-       System.out.println("Missing arguments");
-       printHelpMessage();
-       return;
-   }
 
    // Compute and print statistics based on the selected mode
    switch (statType) {
