@@ -71,9 +71,9 @@ public class computeAverage {
     * the user request
     * Front end method
     ********************************************************* */
-// private void PrintBody (PrintWriter out, String inputStrRaw, String resultStr)
+// private void PrintBody (PrintWriter out, String numbers, String resultStr)
 // {
-//    String cleanInput = Arrays.toString(sanitize(inputStrRaw).split(" "));
+//    String cleanInput = Arrays.toString(sanitize(numbers).split(" "));
 //    resultStr = "Sanitized input: " +cleanInput+ "\n" +resultStr;
 
 //    out.println("<body style='background-color:#fff5e6'>");
@@ -90,9 +90,9 @@ public class computeAverage {
 //    out.println("  <table align='center'>");
 //    out.println("  <tr>");
 //    out.println("    <td>");
-//    out.println("      <label for='inputStrRaw' style='text-align:center;'>Enter numbers:&emsp;</label>");
+//    out.println("      <label for='numbers' style='text-align:center;'>Enter numbers:&emsp;</label>");
 //    out.println("    </td><td>");
-//    out.println("      <textarea autofocus name='inputStrRaw' id='inputStrRaw' rows='5' cols='30' value='string' placeholder='Enter numbers here' >"+inputStrRaw+"</textarea><br/>");
+//    out.println("      <textarea autofocus name='numbers' id='numbers' rows='5' cols='30' value='string' placeholder='Enter numbers here' >"+numbers+"</textarea><br/>");
 //    out.println("  </td></tr>");
 //    out.println("  <tr>");
 //    out.println("    <td>");
@@ -156,7 +156,7 @@ public class computeAverage {
 //    PrintWriter out = response.getWriter();
 
 //    // get input data
-//    String inputStrRaw = request.getParameter("inputStrRaw");
+//    String numbers = request.getParameter("numbers");
 //    String resultStr   = request.getParameter("stringOutput");
 //    String operation   = request.getParameter("Operation");
 
@@ -165,8 +165,8 @@ public class computeAverage {
 //       PrintBody(out, "", ""); // reprint the form, blank
 //    else
 //    {
-//       resultStr = compute(inputStrRaw, operation);
-//       PrintBody(out, inputStrRaw, resultStr);
+//       resultStr = compute(numbers, operation);
+//       PrintBody(out, numbers, resultStr);
 //    }
 //    PrintTail(out);
 // }  // End doPost
@@ -177,11 +177,11 @@ public class computeAverage {
     * sends the results back to the client.
     * Back end method
     ********************************************************* */
-private static String compute(String inputStrRaw, String oper)
+private static String compute(String numbers, String oper)
 {
    String averageValueString;
 
-   String cleanIn = sanitize(inputStrRaw);
+   String cleanIn = sanitize(numbers);
    if (cleanIn.equals(""))
      return "";
    String[] cleanInput = cleanIn.split(" ");
@@ -382,51 +382,65 @@ private static void printHelpMessage() {
 }
 
 public static void main(String[] args) {
-   // for (int i = 0; i < args.length; i++) {
-   //    System.out.println(args[i]);
-   // }
-   // Initialize variables to store command line arguments
-   String inputStrRaw = "";
-   int userMetricChoice = 0; // 0 for no statistics mode selected, 1 for Mean, 2 for Median, 3 for Mode
+   String numbers = "";
+   int statType = 0;
 
-   // Parse command line arguments
    for (int i = 0; i < args.length; i++) {
        if ("-ln".equals(args[i]) || "--list-of-numbers".equals(args[i])) {
            if (i + 1 < args.length) {
-               inputStrRaw = args[i + 1];
-               System.out.println(inputStrRaw);
-               if (inputStrRaw == null || "null".equals(inputStrRaw)) {
+               numbers = args[i + 1];
+               if (numbers == null || "null".equals(numbers) || numbers.split(" ").length < 1) {
                    System.out.println("Missing arguments");
                     return;
                }
-               i++; // Skip the next argument
+//               i++; // Skip the next argument
            }
        } else if ("-sm".equals(args[i]) || "--statistics-mode".equals(args[i])) {
            if (i + 1 < args.length) {
-               userMetricChoice = Integer.parseInt(args[i + 1]);
-               i++; // Skip the next argument
+               try {
+                   statType = Integer.parseInt(args[i + 1]);
+               } catch(NumberFormatException e) {
+                   System.out.println("Invalid arguments");
+                   return;
+               }
            }
+//               i++; // Skip the next argument
+
        } else if ("-h".equals(args[i]) || "--help".equals(args[i])) {
            printHelpMessage();
            return; // Exit the program
        }
    }
 
-   if (inputStrRaw == null || inputStrRaw == "null") {
+   if (numbers == null || numbers == "null") {
       System.out.println("Missing arguments");
       return;
    }
    // Validate input
-   if (inputStrRaw == null || inputStrRaw.isEmpty() || userMetricChoice < 1 || userMetricChoice > 4) {
+   if (numbers == null || numbers.isEmpty() || statType < 1 || statType > 4) {
        printHelpMessage();
        return; // Exit the program
    }
 
    // Clean and split the input string
-   String[] cleanInput = sanitize(inputStrRaw).split(" ");
+    String cleanInputStr = sanitize(numbers);
+
+    if ("".equals(cleanInputStr)) {
+        System.out.println("Missing arguments");
+        printHelpMessage();
+        return;
+    }
+
+   String[] cleanInput = cleanInputStr.split(" ");
+
+   if ("".equals(cleanInput)) {
+       System.out.println("Missing arguments");
+       printHelpMessage();
+       return;
+   }
 
    // Compute and print statistics based on the selected mode
-   switch (userMetricChoice) {
+   switch (statType) {
        case 1:
            double mean = getMeanValue(cleanInput);
            System.out.println("The Mean is: " + mean);
