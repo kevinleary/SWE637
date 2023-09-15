@@ -441,7 +441,8 @@ public static void main(String[] args) {
     String cleanInputStr = sanitize(numbers);
 
     if ("".equals(cleanInputStr)) {
-        System.out.println("Cannot invoke \"java.lang.CharSequence.length()\" because \"this.text\" is null");
+        System.out.println("Missing argument(s)");
+        System.out.println(" ");
         printHelpMessage();
         return;
     }
