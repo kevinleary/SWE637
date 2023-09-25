@@ -102,7 +102,7 @@ public class Assignment3 {
 
         // Return the mode, numbers list if there is no mode.
         //Convert to string? Test inputs show it listing the whole set if no mode found...
-        return maxCount > 1 ? maxValue : numbers[count];
+        return maxCount > 1 ? maxValue : -1;
 //        return mode;
     }
 
@@ -111,6 +111,6 @@ public class Assignment3 {
         double sumOfSquares = DoubleStream.of(numbers)
                 .map(num -> Math.pow(num - mean, 2))
                 .sum();
-        return Math.sqrt(sumOfSquares / (numbers.length - 1));
+        return Math.ceil( (Math.sqrt(sumOfSquares / (numbers.length))) * 100.0) / 100.0;
     }
 }
