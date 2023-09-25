@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.stream.DoubleStream;
@@ -35,7 +37,7 @@ public class Assignment3 {
                 System.out.println("The Median is: " + median);
                 break;
             case 3:
-                String mode = calculateMode(numbers);
+                double mode = calculateMode(numbers);
                 System.out.println("The Mode is: " + mode);
                 break;
             case 4:
@@ -74,10 +76,34 @@ public class Assignment3 {
         }
     }
 
-    private static String calculateMode(double[] numbers) {
+    private static double calculateMode(double[] numbers) {
         // Implement mode calculation logic here
         // You can return a string with the mode values separated by spaces
-        return "";
+//        double mode = Arrays.stream(numbers).max().getAsDouble();
+        // Create a map to store the counts of each element in the array.
+        Map<Double, Double> counts = new HashMap<>();
+
+        // Iterate over the array and count the occurrences of each element.
+        for (double element : numbers) {
+            double count = counts.getOrDefault(element, Double.valueOf(0));
+            counts.put(element, count + 1);
+        }
+
+        // Find the element with the highest count.
+        double maxValue = 0;
+        double maxCount = 0;
+        for (Map.Entry<Double, Double> entry : counts.entrySet()) {
+            double count = entry.getValue();
+            if (count > maxCount) {
+                maxCount = count;
+                maxValue = entry.getKey();
+            }
+        }
+
+        // Return the mode, numbers list if there is no mode.
+        //Convert to string? Test inputs show it listing the whole set if no mode found...
+        return maxCount > 1 ? maxValue : numbers[count];
+//        return mode;
     }
 
     private static double calculateStandardDeviation(double[] numbers) {
