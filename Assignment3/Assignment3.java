@@ -255,7 +255,7 @@ public class Assignment3 {
             return 0;
         for (String i : numbers)
         {
-
+            total += Double.parseDouble(i);
             if (total == Double.POSITIVE_INFINITY || total == Double.NEGATIVE_INFINITY)
             {
                 throw new ArithmeticException("overflow");
