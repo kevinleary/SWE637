@@ -1,3 +1,5 @@
+package Assignment3;
+
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -20,33 +22,20 @@ class Assignment3Test {
     }
 
     @Test
-    void testCalculateMean() {
-        double[] numbers = {1, 1, 2, 3, 4, 4, 5, 5};
-//        double[] numbers = {1,2,2,1,3,3};
-
-        Assignment3.calculateMean(numbers);
-        assertEquals(3.125, Assignment3.calculateMean(numbers));
+    void testGetMeanValue() {
+        String numbers = "1 2 3";
+        assertEquals("The Mean is: 2.0", Assignment3.compute(numbers, "Mean"));
     }
 
     @Test
     void testCalculateMedian() {
-        double[] numbers = {1, 1, 2, 3, 4, 4, 5, 5};
-//        double[] numbers = {-1000000, 0, 1000000};
-
-        Assignment3.calculateMedian(numbers);
-        assertEquals(3.5 , Assignment3.calculateMedian(numbers));
+        String numbers = "1 1 2 3 4 4 5 5";
+        assertEquals("The Median is: 3.5" , Assignment3.compute(numbers, "Median"));
     }
 
     @Test
     void testCalculateMode() {
-        double[] numbers = {-1000000, 0, 1000000};
-
-        Assignment3.calculateMode(numbers);
-        assertEquals(-1000000, 0, 1000000 , Assignment3.calculateMode(numbers));
-    }
-
-    @Test
-    void testCalculateStandardDeviation() {
-
+        String numbers = "-1000000 0 1000000";
+        assertEquals("The Mode is: -1000000 0 1000000", Assignment3.compute(numbers, "Mode"));
     }
 }

@@ -178,7 +178,7 @@ public class Assignment3 {
      * sends the results back to the client.
      * Back end method
      ********************************************************* */
-    private static String compute(String numbers, String oper)
+    public static String compute(String numbers, String oper)
     {
         String averageValueString;
 
