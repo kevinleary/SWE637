@@ -329,7 +329,7 @@ public class Assignment3 {
      * @return mode in an array in order
      * Back end method
      ********************************************************* */
-    private static String modeGetOrderedMode(String mode)
+    public static String modeGetOrderedMode(String mode)
     {
         String [] arr = mode.trim().split(" ");
         List <Double> l = new ArrayList<>();
@@ -374,7 +374,7 @@ public class Assignment3 {
      *      number of times the value appears in the original Array.
      * Back end method
      ********************************************************* */
-    private static void modePopulateMap(String[] numbers, Map<String, Integer> map)
+    public static void modePopulateMap(String[] numbers, Map<String, Integer> map)
     {
         for (String s : numbers)
         {
@@ -385,7 +385,7 @@ public class Assignment3 {
         }
     }
 
-    private static void printHelpMessage() {
+    public static void printHelpMessage() {
         System.out.println("java computeAverageCLI");
         System.out.println("   Arguments");
         System.out.println("       -ln, --list-of-numbers");
@@ -402,7 +402,7 @@ public class Assignment3 {
         System.out.println("              Prints this message");
     }
 
-    private static void interactiveMode() {
+    public static void interactiveMode() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter numbers (with or without decimal fractions):");
         String inputNumbers = scanner.nextLine();
