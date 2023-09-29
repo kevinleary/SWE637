@@ -178,33 +178,91 @@ public class Assignment3 {
      * sends the results back to the client.
      * Back end method
      ********************************************************* */
-    public static String compute(String numbers, String oper)
+    public static void compute(String[] args)
     {
-        String averageValueString;
+        String numbers = "";
+        int statType = 0;
 
-        String cleanIn = sanitize(numbers);
-        if (cleanIn.equals(""))
-            return "";
-        String[] cleanInput = cleanIn.split(" ");
+        for (int i = 0; i < args.length; i++) {
+            if ("-ln".equals(args[i]) || "--list-of-numbers".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    numbers = args[i + 1];
+                    i++; // Skip the next argument
+                }
+            } else if ("-sm".equals(args[i]) || "--statistics-mode".equals(args[i])) {
+                if (i + 1 < args.length) {
+                    try {
+                        statType = Integer.parseInt(args[i + 1]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid arguments");
+                        printHelpMessage();
+                        return;
+                    }
+                    i++; // Skip the next argument
+                }
+            } else if ("-im".equals(args[i]) || "--interactive-mode".equals(args[i])) {
+                interactiveMode();
+                return; // Exit the program
+            } else if ("-h".equals(args[i]) || "--help".equals(args[i])) {
+                printHelpMessage();
+                return; // Exit the program
+            }
+        }
 
-        if (oper==null)
-            return("I did not find an operation");
+        if (statType == 0) {
+            System.out.println("Incorrect flags");
+            printHelpMessage();
+            return;
+        }
 
-        switch (oper)
-        {
-            case "Mean":
-                averageValueString = Double.toString(getMeanValue(cleanInput));
+        if (numbers.isEmpty()) {
+            System.out.println("Missing arguments");
+            printHelpMessage();
+            return;
+        }
+
+        String cleanInputStr = sanitize(numbers);
+
+        if (cleanInputStr.isEmpty()) {
+            System.out.println("Missing argument(s)");
+            printHelpMessage();
+            return;
+        }
+
+        String[] cleanInput = cleanInputStr.split(" ");
+
+        switch (statType) {
+            case 1:
+                double mean = getMeanValue(cleanInput);
+                System.out.println("The Mean is: " + mean);
                 break;
-            case "Median":
-                averageValueString = Double.toString(getMedianValue(cleanInput));
+            case 2:
+                double median = getMedianValue(cleanInput);
+                System.out.println("The Median is: " + median);
                 break;
-            case "Mode": // returns a string; may be more than one number
-                averageValueString = getModeList(cleanInput);
+            case 3:
+                String mode = getModeList(cleanInput);
+                System.out.println("The Mode is: " + mode);
+                break;
+            case 4:
+                double stdDeviation = getStandardDeviationValue(cleanInput);
+                System.out.println("The Standard Deviation is: " + stdDeviation);
+                break;
+            case 5:
+                mean = getMeanValue(cleanInput);
+                median = getMedianValue(cleanInput);
+                mode = getModeList(cleanInput);
+                stdDeviation = getStandardDeviationValue(cleanInput);
+                System.out.println("The Mean is: " + mean);
+                System.out.println("The Median is: " + median);
+                System.out.println("The Mode is: " + mode);
+                System.out.println("The Standard Deviation is: " + stdDeviation);
                 break;
             default:
-                return("How did you give me an invalid operation?");
+                System.out.println("Invalid option");
+                printHelpMessage();
+                break;
         }
-        return("The " +oper+ " is: " +averageValueString);
     }
 
     /** *****************************************************
@@ -465,89 +523,8 @@ public class Assignment3 {
 //        }
     }
     public static void main(String[] args) {
-        String numbers = "";
-        int statType = 0;
+        compute(args);
 
-        for (int i = 0; i < args.length; i++) {
-            if ("-ln".equals(args[i]) || "--list-of-numbers".equals(args[i])) {
-                if (i + 1 < args.length) {
-                    numbers = args[i + 1];
-                    i++; // Skip the next argument
-                }
-            } else if ("-sm".equals(args[i]) || "--statistics-mode".equals(args[i])) {
-                if (i + 1 < args.length) {
-                    try {
-                        statType = Integer.parseInt(args[i + 1]);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid arguments");
-                        printHelpMessage();
-                        return;
-                    }
-                    i++; // Skip the next argument
-                }
-            } else if ("-im".equals(args[i]) || "--interactive-mode".equals(args[i])) {
-                interactiveMode();
-                return; // Exit the program
-            } else if ("-h".equals(args[i]) || "--help".equals(args[i])) {
-                printHelpMessage();
-                return; // Exit the program
-            }
-        }
-
-        if (statType == 0) {
-            System.out.println("Incorrect flags");
-            printHelpMessage();
-            return;
-        }
-
-        if (numbers.isEmpty()) {
-            System.out.println("Missing arguments");
-            printHelpMessage();
-            return;
-        }
-
-        String cleanInputStr = sanitize(numbers);
-
-        if (cleanInputStr.isEmpty()) {
-            System.out.println("Missing argument(s)");
-            printHelpMessage();
-            return;
-        }
-
-        String[] cleanInput = cleanInputStr.split(" ");
-
-        switch (statType) {
-            case 1:
-                double mean = getMeanValue(cleanInput);
-                System.out.println("The Mean is: " + mean);
-                break;
-            case 2:
-                double median = getMedianValue(cleanInput);
-                System.out.println("The Median is: " + median);
-                break;
-            case 3:
-                String mode = getModeList(cleanInput);
-                System.out.println("The Mode is: " + mode);
-                break;
-            case 4:
-                double stdDeviation = getStandardDeviationValue(cleanInput);
-                System.out.println("The Standard Deviation is: " + stdDeviation);
-                break;
-            case 5:
-                mean = getMeanValue(cleanInput);
-                median = getMedianValue(cleanInput);
-                mode = getModeList(cleanInput);
-                stdDeviation = getStandardDeviationValue(cleanInput);
-                System.out.println("The Mean is: " + mean);
-                System.out.println("The Median is: " + median);
-                System.out.println("The Mode is: " + mode);
-                System.out.println("The Standard Deviation is: " + stdDeviation);
-                break;
-            default:
-                System.out.println("Invalid option");
-                printHelpMessage();
-                break;
-        }
     }
 
 }  // End class
